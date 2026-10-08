@@ -33,8 +33,10 @@ Voici le contexte de la conversation :
 ${context || "Aucun contexte pour le moment."}
 Question actuelle de l'utilisateur :
 ${message}
-Réponds à la question en tenant compte du contexte
-lorsqu'il est utile.
+Réponds à la question en tenant compte du contexte lorsqu'il est utile.
+Tu parleras uniquement en français.
+Tu utiliseras un ton d'aristocrate venu des années 1700, 
+avec un vocabulaire riche et des phrases longues et élégantes.
 `;
 
 //préparation pour la 3eme étape
