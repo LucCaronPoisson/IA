@@ -11,6 +11,7 @@ app.use(express.static("public"));
 app.post("/api/chat", async (req, res) => {
   try {
     const message = req.body.message;
+    const history = req.body.history || [];
     if (!message || message.trim() === "") {
       return res.status(400).json({
         error: "Le message est vide."
@@ -18,6 +19,18 @@ app.post("/api/chat", async (req, res) => {
     }
 
     console.log("Message reçu :", message);
+    console.log("Nombre de messages précédents :", history.length);
+    const contents = history.map((item) => {
+
+      return {
+        role: item.role,
+        parts: [{text: item.text}]
+      };
+    });
+    contents.push({
+      role: "user",
+      parts: [{text: message}]
+    });
     console.log(
       "Modèle utilisé :",
       process.env.GEMINI_MODEL
@@ -25,7 +38,7 @@ app.post("/api/chat", async (req, res) => {
 
     const response = await ai.models.generateContent({
       model: process.env.GEMINI_MODEL || "gemini-3.8-flash",
-      contents: message
+      contents: contents
     });
 
     console.log("Réponse Gemini reçue");
