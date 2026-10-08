@@ -3,6 +3,8 @@ const input = document.getElementById("message-input");
 const messages = document.getElementById("messages");
 const button = form.querySelector("button");
 const history = [];
+let context = "";
+
 function addMessage(text, sender) {
   const message = document.createElement("div");
   message.classList.add("message", sender);
@@ -37,7 +39,8 @@ form.addEventListener("submit", async (event) => {
       },
       body: JSON.stringify({
         message: message,
-        history: history
+        history: history,
+        context: context
       })
     });
     const data = await response.json();
@@ -45,6 +48,7 @@ form.addEventListener("submit", async (event) => {
       throw new Error(data.error || "Une erreur est survenue.");
     }
     addMessage(data.answer, "ai");
+    context = data.context;
 
     history.push({
       role: "user",
@@ -55,7 +59,7 @@ form.addEventListener("submit", async (event) => {
       role: "model",
       text: data.answer
     });
-    console.log("Historique :", history);
+    console.log("Contexte actuel :", context);
   } catch (error) {
     addMessage(
       "Erreur : " + error.message,
